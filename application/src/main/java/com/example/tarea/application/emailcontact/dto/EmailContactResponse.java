@@ -1,0 +1,25 @@
+package com.example.tarea.application.emailcontact.dto;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+import com.example.tarea.domain.emailcontact.model.aggregate.EmailContact;
+
+public record EmailContactResponse(
+        UUID id,
+        UUID contactId,
+        String email,
+        String notes,
+        LocalDateTime createdAt,
+        LocalDateTime updatedAt) {
+
+    public static EmailContactResponse fromDomain(EmailContact aggregate) {
+        return new EmailContactResponse(
+                aggregate.id().value(),
+                aggregate.contactId(),
+                aggregate.email(),
+                aggregate.notes(),
+                aggregate.createdAt(),
+                aggregate.updatedAt());
+    }
+}

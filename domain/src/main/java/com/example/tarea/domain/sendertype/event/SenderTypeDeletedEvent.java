@@ -1,0 +1,12 @@
+package com.example.tarea.domain.sendertype.event;
+
+import java.time.LocalDateTime;
+
+import com.example.tarea.domain.common.event.DomainEvent;
+import com.example.tarea.domain.sendertype.model.valueobject.SenderTypeId;
+
+public record SenderTypeDeletedEvent(
+        SenderTypeId id,
+        LocalDateTime occurredOn
+) implements DomainEvent {
+}

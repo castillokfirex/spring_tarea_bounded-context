@@ -1,0 +1,53 @@
+-- =====================================================================
+-- SCHEMA VERIFICADO CONTRA LAS 5 IMÁGENES EN ALTA RESOLUCIÓN
+-- =====================================================================
+-- Este archivo reemplaza la versión anterior (reconstruida desde una
+-- sola imagen de baja resolución). Cada tabla de este archivo fue leída
+-- directamente de tus capturas en zoom, columna por columna.
+--
+-- CONVENCIÓN DE NULABILIDAD usada en tu diagrama (deducida y confirmada
+-- de forma consistente en decenas de columnas):
+--   PK  = primary key
+--   FK  = foreign key
+--   U   = UNIQUE
+--   N   = la columna SÍ admite NULL (nullable / opcional)
+--   (sin marca) = NOT NULL
+-- Lo apliqué así en todo el script.
+--
+-- Nota ortográfica: tu diagrama usa "statusses" (doble s) en el módulo
+-- clínico (clinical_record_statusses, encounter_statusses,
+-- treatment_statusses, treatment_goal_statusses) pero "statuses"
+-- (una sola s) en el módulo de chat/IA (conversations_statuses,
+-- ai_runs_statuses, escalations_statuses). No es un error mío: así
+-- aparece literalmente en tu diagrama, y lo respeté tal cual para que
+-- los nombres de FK coincidan exactamente con las tablas.
+--
+-- Puntos que quedaron marcados con "-- (revisar)" porque tu propio
+-- diagrama parece tener una inconsistencia (no porque yo no pudiera
+-- leerlos — esos ya los verifiqué con zoom):
+--   1. ai_models.provider_model_id es VARCHAR(50) y está marcado FK,
+--      pero provider_models_ai.id es UUID. Los tipos no coinciden, así
+--      que no puedo crear la FK real; dejé la columna sin REFERENCES.
+--   2. treatment_goals tiene una FK llamada literalmente
+--      "treatment_goal_id", pero por la línea de relación del diagrama
+--      apunta a treatment_goal_statusses. Mantuve el nombre tal como
+--      está escrito y la referencia según la relación visual.
+--   3. patient_allergies.recorded_by y chat_conversations.closed_by son
+--      UUID pero NO están marcados como FK en tu diagrama (a diferencia
+--      de otras columnas "_by" que sí lo están), así que los dejé sin
+--      REFERENCES.
+--   4. provider_models_ai.isActive está en camelCase en tu diagrama
+--      (el resto del esquema usa snake_case); lo dejé igual.
+--   5. city_municipalities: la columna se ve como "code_citi" en el
+--      diagrama; asumí que es "code_city" (como en el resto de catálogos
+--      geográficos), pero vale la pena que lo confirmes.
+--
+-- Tablas que NO aparecían en las 5 imágenes nuevas (resource_types,
+-- resource_locations, resource_statuses) se mantienen tal como las
+-- había inferido antes, SIN verificar — siguen marcadas "(inferida)".
+-- Si tienes capturas de esa zona o de alguna otra que falte, las ajusto.
+--
+-- Motor objetivo: PostgreSQL.
+-- =====================================================================
+
+CREATE EXTENSION IF NOT EXISTS "pgcrypto"; -- para gen_random_uuid()

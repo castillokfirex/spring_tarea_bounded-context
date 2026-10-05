@@ -1,0 +1,22 @@
+package com.example.tarea.application.providermodelai.usecase;
+
+import java.util.List;
+
+import com.example.tarea.application.providermodelai.dto.ProviderModelAiResponse;
+import com.example.tarea.domain.providermodelai.port.repository.ProviderModelAiRepository;
+
+public class ListProviderModelAiUseCase {
+
+    private final ProviderModelAiRepository repository;
+
+    public ListProviderModelAiUseCase(ProviderModelAiRepository repository) {
+        this.repository = repository;
+    }
+
+    public List<ProviderModelAiResponse> execute() {
+        return repository.findAll()
+                .stream()
+                .map(ProviderModelAiResponse::fromDomain)
+                .toList();
+    }
+}
